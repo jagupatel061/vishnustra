@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>The Lost Observatory · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .game { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; padding-block: 8px 56px; }
+  .seals { display: flex; flex-direction: column; gap: 10px; }
+  .seal { display: flex; align-items: center; gap: 14px; padding: 10px 12px; border: 1px solid var(--line-2); border-radius: 10px; color: var(--ink-3); }
+  .seal .num { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--line-2); display: flex; align-items: center; justify-content: center; font-family: var(--deva); font-size: 20px; flex: none; }
+  .seal.done { color: var(--ink-2); border-color: var(--gold-dim); }
+  .seal.done .num { background: var(--gold); color: #17120a; border-color: var(--gold); }
+  .seal.now { color: var(--ink); border-color: var(--gold); box-shadow: 0 0 24px rgba(244,197,66,.12); }
+  .seal.now .num { border-color: var(--gold); color: var(--gold); }
+  .room-card { position: relative; min-height: 520px; overflow: hidden; }
+  .room-card h2 { font-family: var(--display); font-weight: 300; font-size: clamp(24px, 3vw, 34px); letter-spacing: .1em; margin: 6px 0 0; }
+  .room-card .story { color: var(--ink-2); max-width: 60ch; margin: 12px 0 0; }
+  .room-card .q { font-size: 18px; margin: 22px 0 0; max-width: 56ch; }
+  .choices { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; margin-top: 18px; max-width: 520px; }
+  .choices button { padding: 14px; border-radius: 10px; border: 1px solid var(--line-2); background: var(--bg-2); cursor: pointer; font-family: var(--accent-serif); font-style: italic; font-size: 20px; transition: border-color .2s; }
+  .choices button:hover { border-color: var(--gold); }
+  .answer-row { display: flex; gap: 10px; margin-top: 18px; flex-wrap: wrap; }
+  .answer-row input { height: 48px; width: 160px; font-size: 20px; text-align: center; border-radius: 10px; border: 1px solid var(--line-2); background: var(--bg-2); }
+  .feedback { min-height: 1.6em; margin-top: 14px; font-size: 14px; }
+  .feedback.bad { color: #e8a07a; } .feedback.good { color: var(--gold); }
+  #dhruva-cv { aspect-ratio: 16 / 9; margin-top: 18px; cursor: crosshair; }
+  .win { text-align: center; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+  .cert { border: 1px solid var(--gold); border-radius: 12px; padding: 26px 30px; background: radial-gradient(ellipse at top, rgba(244,197,66,.12), transparent 70%); max-width: 520px; }
+  .cert .title { font-family: var(--accent-serif); font-style: italic; font-size: 34px; color: var(--gold); line-height: 1.1; }
+  @media (max-width: 900px) { .game { grid-template-columns: 1fr; } .seals { flex-direction: row; overflow-x: auto; } .seal { flex: 0 0 auto; } .seal .lbl { display: none; } .choices { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-page="observatory">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">The Lost Observatory · a puzzle game</span>
+        <h1>Unlock the <span class="serif-i">observatory</span></h1>
+        <p>Long ago, sky-watchers sealed their observatory behind five gates. Answer each riddle from the stars to break a seal, then find the one star that never moves.</p>
+      </div>
+      <button class="btn" type="button" id="restart">Start over</button>
+    </div>
+  </section>
+
+  <div class="wrap game">
+    <aside class="seals" id="seals" aria-label="Progress"></aside>
+    <section class="panel-box room-card" id="stage" aria-live="polite"></section>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/observatory.js"></script>
+</body>
+</html>

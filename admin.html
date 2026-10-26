@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Backend Data · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .tiles { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+  .tile { border: 1px solid var(--line-2); border-radius: 10px; padding: 16px 18px; background: rgba(14,14,16,.88); }
+  .tile .k { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .tile .v { font-family: var(--display); font-size: 34px; font-weight: 300; margin-top: 4px; font-variant-numeric: tabular-nums; }
+  .tile .v small { font-size: 13px; color: var(--ink-3); }
+  .tables { display: flex; flex-direction: column; gap: 22px; padding-block: 24px 56px; }
+  .tbl-head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 8px; }
+  .tbl-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; text-transform: uppercase; }
+  .scroll { overflow-x: auto; border: 1px solid var(--line-2); border-radius: 10px; background: rgba(14,14,16,.88); }
+  table { border-collapse: collapse; width: 100%; font-size: 13px; font-variant-numeric: tabular-nums; }
+  th, td { text-align: left; padding: 10px 14px; border-bottom: 1px solid var(--line); white-space: nowrap; }
+  th { font-weight: 400; font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase; color: var(--ink-3); background: rgba(255,255,255,.02); }
+  td.star { font-family: var(--accent-serif); font-style: italic; color: var(--gold); font-size: 16px; }
+  td.wrap { white-space: normal; min-width: 240px; }
+  tr.new td { animation: flash 2.4s ease-out; }
+  @keyframes flash { from { background: rgba(244,197,66,.22); } to { background: transparent; } }
+  .empty td { color: var(--ink-3); text-align: center; padding: 18px; }
+  .filebox { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 12px; color: var(--gold); background: rgba(244,197,66,.06); border: 1px solid var(--gold-dim); border-radius: 8px; padding: 6px 10px; }
+  @media (max-width: 900px) { .tiles { grid-template-columns: repeat(2, minmax(0, 1fr)); } .tile:last-child:nth-child(odd) { grid-column: span 2; } }
+</style>
+</head>
+<body data-page="admin">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Backend · live database</span>
+        <h1>What the server <span class="serif-i">has stored</span></h1>
+        <p>Every jury guest, birth-star search, poll answer, Rishi question and certificate is saved by the Node server in a JSON database file. This page updates by itself the moment something new arrives.</p>
+      </div>
+      <div class="stack" style="align-items:flex-end">
+        <span class="chip" id="live"><span class="dot"></span><span id="live-text">Connecting…</span></span>
+        <span class="filebox" id="file">server/data/db.json</span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="note-box" id="offline" hidden><b>The server isn't running.</b> Open the VS Code terminal, type <b>npm start</b>, then open http://localhost:3000/admin.html.</div>
+    <div class="tiles" id="tiles"></div>
+    <div class="tables" id="tables"></div>
+    <div class="row" style="padding-bottom:56px">
+      <a class="btn" href="/api/admin/data" target="_blank" rel="noopener">View raw JSON</a>
+      <button class="btn" type="button" id="reset">Clear all data</button>
+      <span class="muted" id="reset-note" style="font-size:12px"></span>
+    </div>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

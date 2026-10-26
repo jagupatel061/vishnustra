@@ -1,0 +1,9 @@
+# Render.com blueprint: hosts Vishnustra online for free (no installation on your laptop).
+services:
+  - type: web
+    name: vishnustra
+    runtime: node
+    plan: free
+    buildCommand: echo "no build needed"
+    startCommand: npm start
+    healthCheckPath: /api/info

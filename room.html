@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>QR Room · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .room { display: grid; grid-template-columns: minmax(0, 1fr) 340px; gap: 24px; padding-block: 28px 40px; }
+  .room-sky { position: relative; aspect-ratio: 1 / 1; width: min(100%, calc(100dvh - 190px)); min-width: min(100%, 320px); max-width: 100%; margin: 0 auto; }
+  .room-sky canvas { width: 100%; height: 100%; display: block; }
+  .qr-box { background: #f6f1e4; border-radius: 12px; padding: 14px; width: 100%; max-width: 240px; aspect-ratio: 1; display: flex; align-items: center; justify-content: center; margin: 0 auto; }
+  .qr-box svg { width: 100%; height: auto; display: block; }
+  .code { font-family: var(--display); font-size: 44px; letter-spacing: .3em; text-align: center; color: var(--gold); line-height: 1; }
+  .guests { display: flex; flex-direction: column; gap: 6px; max-height: 260px; overflow: auto; }
+  .guest { display: flex; justify-content: space-between; gap: 10px; border-bottom: 1px solid var(--line); padding: 6px 0; font-size: 13px; }
+  .guest b { font-weight: 400; }
+  .guest span { font-family: var(--accent-serif); font-style: italic; color: var(--gold); font-size: 16px; }
+  .toast { position: fixed; left: 50%; bottom: calc(28px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 40; background: rgba(12,12,14,.92); border: 1px solid var(--gold-dim); border-radius: 999px; padding: 12px 22px; font-size: 14px; box-shadow: 0 0 40px rgba(244,197,66,.2); transition: opacity .4s; }
+  .toast span { color: var(--gold); font-family: var(--accent-serif); font-style: italic; font-size: 18px; }
+  .url { font-size: 11px; color: var(--ink-3); word-break: break-all; text-align: center; }
+  @media (max-width: 900px) { .room { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-page="room">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main class="wrap room">
+  <div class="stack" style="min-width:0">
+    <div class="row" style="justify-content:space-between">
+      <div>
+        <span class="eyebrow">QR Room</span>
+        <h1 class="h2" style="margin-top:4px">The jury's <span class="serif-i gold" style="font-size:1.3em">sky</span></h1>
+      </div>
+      <span class="chip" id="mode-chip"><span class="dot"></span><span id="mode-text">Connecting…</span></span>
+    </div>
+    <div class="room-sky"><canvas id="room-canvas"></canvas></div>
+  </div>
+
+  <aside class="stack">
+    <div class="panel-box stack" style="align-items:stretch">
+      <p class="cap muted" style="margin:0;text-align:center">Scan to join</p>
+      <div class="qr-box" id="qr" aria-label="QR code to join this room"></div>
+      <div class="code" id="code">····</div>
+      <div class="url" id="url"></div>
+      <div class="note-box" id="phone-help" hidden><b>Phones:</b> join the same Wi-Fi or hotspot as this laptop and scan the code. If the phone warns "not private", tap <b>Advanced &rarr; Proceed</b> once (it's our own local certificate).</div>
+      <div class="note-box" id="local-warn" hidden><b>Start the server so phones can join.</b> In the VS Code terminal type <b>npm start</b>, then open http://localhost:3000/room.html.</div>
+    </div>
+    <div class="panel-box stack">
+      <div class="row" style="justify-content:space-between"><span class="cap muted">Stars in the room</span><span class="cap gold" id="count">0</span></div>
+      <div class="guests" id="guests"><p class="muted" style="margin:0;font-size:12.5px">Waiting for the first phone…</p></div>
+      <div class="row">
+        <button class="btn" type="button" id="demo">Add a test guest</button>
+        <button class="btn" type="button" id="newroom">New room</button>
+        <button class="btn" type="button" id="clear">Clear</button>
+      </div>
+    </div>
+  </aside>
+</main>
+</div>
+<div class="toast" id="toast" style="opacity:0" aria-live="polite"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/qr.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/room.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/roompage.js"></script>
+</body>
+</html>

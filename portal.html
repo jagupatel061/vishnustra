@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sky Portal · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .portal-form { max-width: 520px; }
+  #view { position: fixed; inset: 0; z-index: 50; background: #000; }
+  #view video, #view canvas { position: absolute; inset: 0; width: 100%; height: 100%; }
+  #view video { object-fit: cover; }
+  .sheet {
+    position: absolute; left: 0; right: 0; bottom: 0; z-index: 2;
+    padding: 18px max(18px, env(safe-area-inset-left, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-right, 0px));
+    background: linear-gradient(180deg, transparent, rgba(5,5,6,.92) 30%);
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .sheet .who { font-size: 11px; letter-spacing: .2em; text-transform: uppercase; color: var(--ink-2); }
+  .sheet .nm { font-family: var(--accent-serif); font-style: italic; font-size: 38px; line-height: 1; color: var(--gold); }
+  .sheet .nm .deva { font-style: normal; font-size: 24px; margin-left: 8px; }
+  .sheet .sh { font-family: var(--deva); color: var(--gold-hi); font-size: 14px; line-height: 1.7; white-space: pre-line; opacity: .9; }
+  .topbar { position: absolute; top: calc(12px + env(safe-area-inset-top, 0px)); left: max(14px, env(safe-area-inset-left, 0px)); right: max(14px, env(safe-area-inset-right, 0px)); z-index: 2; display: flex; justify-content: space-between; gap: 10px; }
+  .topbar .chip { background: rgba(5,5,6,.6); backdrop-filter: blur(6px); }
+</style>
+</head>
+<body data-page="portal">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="sec subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Sky Portal</span>
+        <h1>Open a window<br>to <span class="serif-i">your star</span></h1>
+        <p>Enter your name and birth details. Your phone camera opens a portal on the wall, with your nakshatra glowing inside. If you scanned a QR code, your star also lights up on the big screen.</p>
+      </div>
+      <span class="chip live" id="room-chip" hidden><span class="dot"></span><span id="room-chip-text"></span></span>
+    </div>
+  </section>
+
+  <section class="sec">
+    <div class="wrap">
+      <form class="panel-box stack portal-form" id="pform">
+        <div class="field"><label for="p-name">Your name</label><input id="p-name" required maxlength="24" autocomplete="given-name" placeholder="e.g. Priya"></div>
+        <div class="field"><label for="p-date">Birth date</label><input type="date" id="p-date" required></div>
+        <div class="field"><label for="p-slot">Born around</label>
+          <select id="p-slot">
+            <option value="">Not sure</option>
+            <option value="dawn">Dawn (around 6 am)</option>
+            <option value="day">Day (around noon)</option>
+            <option value="dusk">Dusk (around 6 pm)</option>
+            <option value="night">Night (around 10 pm)</option>
+            <option value="exact">I know the exact time</option>
+          </select>
+        </div>
+        <div class="field" id="p-time-wrap" hidden><label for="p-time">Exact time (IST)</label><input type="time" id="p-time"></div>
+        <button class="btn solid" type="submit">Open my sky portal ✦</button>
+        <p class="muted" style="margin:0;font-size:12px">Your phone will ask to use the camera. Nothing is recorded or saved; only your name and star are sent to the room screen.</p>
+      </form>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- full-screen portal -->
+<div id="view" hidden>
+  <video id="cam" playsinline muted autoplay></video>
+  <canvas id="portal"></canvas>
+  <div class="topbar">
+    <span class="chip" id="cam-chip">Camera</span>
+    <span class="row" style="gap:8px">
+      <button class="chip" type="button" id="motion-btn" style="background:rgba(5,5,6,.6);cursor:pointer">Enable motion</button>
+      <button class="x-btn" type="button" id="close-view" aria-label="Close portal" style="background:rgba(5,5,6,.6)">×</button>
+    </span>
+  </div>
+  <div class="sheet">
+    <span class="who" id="v-who"></span>
+    <span class="nm" id="v-name"></span>
+    <span class="sh" id="v-shloka"></span>
+    <span class="chip" id="v-sent" style="align-self:flex-start"></span>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/shapes.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/api.js"></script>
+<script src="js/room.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/portal.js"></script>
+</body>
+</html>

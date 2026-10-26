@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Mudra Cosmos · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .mc { display: grid; grid-template-columns: minmax(0, 1fr) 300px; gap: 20px; padding-block: 8px 48px; }
+  .stage-wrap { position: relative; }
+  #mc-canvas { aspect-ratio: 16 / 10; cursor: grab; }
+  #mc-canvas:active { cursor: grabbing; }
+  .cam-pip { position: absolute; right: 12px; bottom: 12px; width: 200px; aspect-ratio: 4 / 3; border-radius: 10px; overflow: hidden; border: 1px solid var(--gold-dim); background: #000; }
+  .cam-pip video, .cam-pip canvas { position: absolute; inset: 0; width: 100%; height: 100%; transform: scaleX(-1); object-fit: cover; }
+  .gesture { position: absolute; left: 12px; top: 12px; }
+  .mudra-card { display: grid; grid-template-columns: 56px 1fr; gap: 12px; align-items: center; border-top: 1px solid var(--line-2); padding-top: 12px; }
+  .mudra-card svg { width: 56px; height: 56px; }
+  .mudra-card b { font-weight: 400; display: block; }
+  .mudra-card small { color: var(--ink-3); font-size: 12px; }
+  .info { min-height: 150px; }
+  .info .nm { font-family: var(--accent-serif); font-style: italic; font-size: 30px; color: var(--gold); line-height: 1.1; }
+  @media (max-width: 900px) { .mc { grid-template-columns: 1fr; } #mc-canvas { aspect-ratio: 4 / 5; } .cam-pip { width: 120px; } }
+</style>
+</head>
+<body data-page="mudra">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Mudra Cosmos · gesture-controlled sky</span>
+        <h1>Move the sky<br>with a <span class="serif-i">mudra</span></h1>
+        <p>The 27 nakshatras at their real places in the sky. Turn on the camera and use classical dance hand gestures to explore, or drag and scroll with the mouse.</p>
+      </div>
+      <div class="row">
+        <button class="btn solid" type="button" id="start-cam">Start camera ✦</button>
+        <span class="chip" id="cam-status"><span class="dot"></span><span id="cam-text">Camera off · mouse mode</span></span>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap mc">
+    <div class="stage-wrap">
+      <canvas class="stage" id="mc-canvas" aria-label="Sky map of the 27 nakshatras. Drag to turn, scroll to zoom, click a star for details."></canvas>
+      <span class="chip gesture" id="gesture" hidden></span>
+      <div class="cam-pip" id="pip" hidden><video id="mc-video" playsinline muted></video><canvas id="mc-hand"></canvas></div>
+    </div>
+    <aside class="stack">
+      <div class="panel-box info" id="info" aria-live="polite">
+        <p class="cap muted" style="margin:0">Tap a star</p>
+        <p class="muted" style="margin:8px 0 0;font-size:13px">Click or tap any gold star to see which nakshatra it is.</p>
+      </div>
+      <div class="panel-box stack">
+        <p class="cap gold" style="margin:0">The mudras</p>
+        <div class="mudra-card">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M18 50 L18 26 M18 26 L18 8 M25 26 L25 6 M32 26 L32 7 M39 27 L39 11 M18 30 Q8 24 10 18" stroke="#f4c542" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M14 50 L42 50 L42 28 L14 28 Z" fill="none" stroke="#8c6a2a"/></svg>
+          <div><b>Pataka · open hand</b><small>Move your flat palm to turn the sky.</small></div>
+        </div>
+        <div class="mudra-card">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><path d="M20 50 L22 26 M30 24 L33 6 M37 25 L41 10 M43 28 L48 16 M22 26 Q16 16 26 14" stroke="#f4c542" stroke-width="3" stroke-linecap="round" fill="none"/><circle cx="26" cy="14" r="3" fill="#fff1c2"/></svg>
+          <div><b>Hamsasya · swan's beak</b><small>Touch thumb and index finger, then move up or down to zoom.</small></div>
+        </div>
+        <div class="mudra-card">
+          <svg viewBox="0 0 56 56" aria-hidden="true"><rect x="14" y="20" width="28" height="26" rx="10" fill="none" stroke="#f4c542" stroke-width="3"/><path d="M14 30 Q8 26 12 20" stroke="#f4c542" stroke-width="3" fill="none" stroke-linecap="round"/></svg>
+          <div><b>Mushti · fist</b><small>Close your hand to hold the sky still.</small></div>
+        </div>
+      </div>
+      <div class="row"><button class="btn" type="button" id="reset">Reset view</button><button class="btn" type="button" id="find-dhruva">Show Dhruva</button></div>
+    </aside>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/shapes.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/mudra.js"></script>
+</body>
+</html>

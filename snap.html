@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Snap the Real Sky · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .snap { display: grid; grid-template-columns: minmax(0, 1fr) 320px; gap: 22px; padding-block: 8px 56px; }
+  .photo { position: relative; border: 1px solid var(--line-2); border-radius: 10px; overflow: hidden; background: #050506; min-height: 360px; display: flex; align-items: center; justify-content: center; }
+  .photo img { width: 100%; height: auto; display: block; }
+  .photo canvas.ov { position: absolute; left: 0; top: 0; width: 100%; height: 100%; pointer-events: none; }
+  .drop { display: flex; flex-direction: column; align-items: center; gap: 12px; padding: 40px 20px; text-align: center; color: var(--ink-2); }
+  .drop.over { outline: 1.5px dashed var(--gold); outline-offset: -10px; }
+  .vis { display: flex; flex-direction: column; gap: 8px; }
+  .vis a { display: flex; justify-content: space-between; border-bottom: 1px solid var(--line); padding: 8px 0; }
+  .vis a span { font-family: var(--accent-serif); font-style: italic; color: var(--gold); font-size: 18px; }
+  .steps-list { margin: 0; padding-left: 18px; color: var(--ink-2); font-size: 13px; display: flex; flex-direction: column; gap: 6px; }
+  .progress { height: 2px; background: var(--line-2); position: relative; overflow: hidden; border-radius: 2px; }
+  .progress i { position: absolute; inset: 0 auto 0 0; width: 30%; background: var(--gold); animation: slide 1.4s ease-in-out infinite; }
+  @keyframes slide { 0% { left: -30%; } 100% { left: 100%; } }
+  @media (max-width: 900px) { .snap { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body data-page="snap">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Snap the Real Sky</span>
+        <h1>Which nakshatras<br>are in <span class="serif-i">your photo?</span></h1>
+        <p>Upload a photo of the night sky. The site matches its stars against a star catalogue, then labels the nakshatras it can see.</p>
+      </div>
+      <span class="chip" id="mode"><span class="dot"></span><span id="mode-text">Checking…</span></span>
+    </div>
+  </section>
+
+  <div class="wrap snap">
+    <div class="stack" style="min-width:0">
+      <div class="photo" id="photo">
+        <label class="drop" id="drop" for="file">
+          <svg width="48" height="48" viewBox="0 0 48 48" aria-hidden="true"><rect x="6" y="10" width="36" height="28" rx="5" fill="none" stroke="#f4c542"/><circle cx="24" cy="24" r="7" fill="none" stroke="#f4c542"/><circle cx="35" cy="16" r="1.5" fill="#f4c542"/></svg>
+          <b style="font-weight:400;color:var(--ink)">Drop a night-sky photo here</b>
+          <span style="font-size:13px">or tap to choose one · JPG or PNG</span>
+        </label>
+        <input type="file" id="file" accept="image/*" hidden>
+      </div>
+      <div class="row">
+        <button class="btn solid" type="button" id="solve" disabled>Find the nakshatras ✦</button>
+        <button class="btn" type="button" id="sample">Try a sample sky</button>
+      </div>
+      <div class="stack" id="status-box" hidden><div class="progress"><i></i></div><p class="muted" style="margin:0;font-size:13px" id="status"></p></div>
+    </div>
+
+    <aside class="stack">
+      <div class="panel-box stack">
+        <p class="cap gold" style="margin:0">Nakshatras in this photo</p>
+        <div class="vis" id="vis"><p class="muted" style="margin:0;font-size:13px">Results appear here.</p></div>
+        <p class="muted" style="margin:0;font-size:11.5px" id="field"></p>
+      </div>
+      <div class="panel-box stack">
+        <p class="cap muted" style="margin:0">For the best result</p>
+        <ol class="steps-list">
+          <li>Take the photo on a clear night, away from street lights.</li>
+          <li>Rest the phone on something steady; use night mode.</li>
+          <li>Include at least 10–20 stars. Wider is easier to match.</li>
+          <li>Matching takes 30 seconds to a few minutes.</li>
+        </ol>
+      </div>
+    </aside>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/snap.js"></script>
+</body>
+</html>

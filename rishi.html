@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Rishi AI · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .chat-wrap { display: grid; grid-template-columns: 300px minmax(0, 1fr); gap: 24px; padding-block: 8px 48px; }
+  .chat-wrap > * { min-width: 0; }
+  .sugg { display: flex; flex-direction: column; gap: 8px; }
+  .sugg button { text-align: left; background: none; border: 1px solid var(--line-2); border-radius: 10px; padding: 10px 12px; cursor: pointer; font-size: 13px; color: var(--ink-2); transition: border-color .2s, color .2s; }
+  .sugg button:hover { border-color: var(--gold-dim); color: var(--ink); }
+  .chat { display: flex; flex-direction: column; min-height: 560px; }
+  .log { flex: 1; display: flex; flex-direction: column; gap: 14px; padding: 6px 2px 18px; overflow-y: auto; max-height: 62vh; }
+  .msg { max-width: 78%; padding: 12px 16px; border-radius: 16px; font-size: 14.5px; line-height: 1.65; }
+  .msg.me { align-self: flex-end; background: var(--gold); color: #17120a; border-bottom-right-radius: 4px; }
+  .msg.ai { align-self: flex-start; background: rgba(255,255,255,.05); border: 1px solid var(--line-2); border-bottom-left-radius: 4px; }
+  .msg.ai .deva { color: var(--gold-hi); font-size: 16px; white-space: pre-line; display: block; margin: 6px 0; }
+  .msg.ai b { color: var(--gold); font-weight: 500; }
+  .msg.ai .src { display: block; margin-top: 8px; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--ink-3); }
+  .who { display: flex; align-items: center; gap: 12px; }
+  .who .moon { width: 52px; height: 52px; border-radius: 50%; box-shadow: 0 0 26px rgba(244,197,66,.3); }
+  .ask { display: flex; gap: 10px; border: 1px solid var(--line-2); border-radius: 999px; padding: 6px 6px 6px 18px; background: var(--bg-2); }
+  .ask input { flex: 1; min-width: 0; border: 0; background: transparent; outline: none; font-size: 15px; }
+  .typing { font-size: 12px; color: var(--ink-3); }
+  @media (max-width: 900px) { .chat-wrap { grid-template-columns: 1fr; } .msg { max-width: 92%; } .sugg { flex-direction: row; flex-wrap: wrap; } .sugg button { flex: 1 1 140px; } }
+</style>
+</head>
+<body data-page="rishi">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div class="who">
+        <img class="moon" src="assets/moon-full.png" alt="">
+        <div>
+          <span class="eyebrow">Rishi AI · your cosmic companion</span>
+          <h1>Ask the <span class="serif-i">Rishi</span></h1>
+        </div>
+      </div>
+      <span class="chip" id="mode"><span class="dot"></span><span id="mode-text">Checking…</span></span>
+    </div>
+  </section>
+
+  <div class="wrap chat-wrap">
+    <aside class="stack">
+      <p class="cap muted" style="margin:0">Try asking</p>
+      <div class="sugg" id="sugg">
+        <button type="button">Why are there 27 nakshatras?</button>
+        <button type="button">Which star is the Moon in tonight?</button>
+        <button type="button">I was born on 14-08-2005. What is my star?</button>
+        <button type="button">What is Rohini's shloka?</button>
+        <button type="button">Who is the deity of Shravana?</button>
+        <button type="button">Does the name Vihaan follow a nakshatra?</button>
+        <button type="button">What is Shishumara?</button>
+        <button type="button">Can nakshatras predict my future?</button>
+      </div>
+      <p class="muted" style="font-size:11.5px;margin:6px 0 0">The Rishi answers only from Vishnustra's research: the 27 stars, their shlokas, the Vishnu Purana and early Indian astronomers. It doesn't make predictions.</p>
+    </aside>
+
+    <section class="panel-box chat" aria-label="Chat with the Rishi">
+      <div class="log" id="log" aria-live="polite"></div>
+      <form class="ask" id="ask">
+        <label for="q" class="cap" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)">Your question</label>
+        <input id="q" placeholder="Ask about any nakshatra, shloka or the sky…" autocomplete="off">
+        <button class="btn solid" type="submit">Ask</button>
+      </form>
+    </section>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/rishi.js"></script>
+</body>
+</html>
