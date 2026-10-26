@@ -1,4 +1,5 @@
-VISHNUSTRA — Foundation of Indian Culture project (Auro University)
+VISHNUSTRA — Foundation of Indian Culture project
+Made by Jagruti Patel, Mahek Desai & Varun Danecha
 ====================================================================
 
 A full website + backend about the 27 nakshatras.

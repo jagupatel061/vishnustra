@@ -1,7 +1,7 @@
 {
   "name": "vishnustra",
   "version": "1.0.0",
-  "description": "Vishnustra: an interactive guide to the 27 nakshatras (Foundation of Indian Culture project, Auro University)",
+  "description": "Vishnustra: an interactive guide to the 27 nakshatras (Foundation of Indian Culture project by Jagruti Patel, Mahek Desai & Varun Danecha)",
   "main": "server/server.js",
   "scripts": {
     "start": "node server/server.js",
