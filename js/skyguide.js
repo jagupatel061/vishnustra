@@ -71,7 +71,9 @@
   sel.innerHTML = CITIES.map((c, i) => `<option value="${i}">${c[0]}</option>`).join("") + `<option value="me" hidden>My location</option>`;
   const saved = store.get("vs-place");
   if (saved) { try { const p = JSON.parse(saved); if (p && typeof p.lat === "number") place = p; } catch { /* ignore */ } }
-  const ci = CITIES.findIndex((c) => c[0] === place.name);
+  // a saved city is matched by its position, so renamed cities still work
+  const ci = CITIES.findIndex((c) => c[0] === place.name || (Math.abs(c[1] - place.lat) < 0.01 && Math.abs(c[2] - place.lon) < 0.01));
+  if (ci >= 0) place.name = CITIES[ci][0];
   sel.value = ci >= 0 ? String(ci) : "me";
   if (ci < 0) { sel.querySelector('[value="me"]').hidden = false; sel.querySelector('[value="me"]').textContent = place.name; }
 
