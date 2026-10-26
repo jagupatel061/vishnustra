@@ -54,6 +54,13 @@ $("#pform").addEventListener("submit", async (e) => {
   }
 });
 
+$("#v-card").addEventListener("click", () => {
+  if (!star) return;
+  const slot = $("#p-slot").value;
+  const r = slot === "exact" && $("#p-time").value ? Astro.findStar($("#p-date").value, $("#p-time").value) : null;
+  StarCard.open({ id: star.id, name: guestName === "Guest" ? "" : guestName, date: $("#p-date").value, pada: r ? r.primary.pada : null });
+});
+
 async function startCamera() {
   const chip = $("#cam-chip");
   try {

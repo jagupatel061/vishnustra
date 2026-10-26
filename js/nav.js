@@ -1,5 +1,5 @@
 /* Shared top bar for every page. Put <header class="nav" id="nav"></header> in the page
-   and set data-page on <body> (home, atlas, portal, room, rishi, mudra, observatory, snap). */
+   and set data-page on <body> (home, atlas, portal, room, rishi, mudra, observatory, snap, festivals). */
 (function () {
   const page = document.body.dataset.page || "home";
   const links = [
@@ -11,6 +11,7 @@
     ["observatory", "observatory.html", "Observatory"],
     ["portal", "portal.html", "Sky Portal"],
     ["snap", "snap.html", "Snap"],
+    ["festivals", "festivals.html", "Festivals"],
   ];
   const el = document.getElementById("nav");
   if (!el) return;

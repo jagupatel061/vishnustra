@@ -87,6 +87,15 @@ function speak(text, lang) {
   return true;
 }
 
+/* Festivals that belong to a star (data/festivals.js), with their next dates */
+let festCache = null;
+function festivalsOf(id) {
+  if (typeof FESTIVALS === "undefined") return [];
+  if (!festCache) festCache = FestCalc.upcoming(new Date(), FESTIVALS);
+  return festCache.filter((f) => (f.kind === "star" ? f.star : f.named || LUNAR_MONTHS[f.month][2]) === id);
+}
+const shortDate = (iso) => new Date(iso + "T12:00:00+05:30").toLocaleDateString("en-IN", { day: "numeric", month: "short", year: "numeric" });
+
 function openStar(id) {
   const n = N[id - 1];
   panelStar = n;
@@ -104,6 +113,8 @@ function openStar(id) {
     ["Deity", n.deity], ["Symbol", n.symbol], ["Sacred tree", n.tree],
     ["Name sounds", n.syllables.join(" · ")], ["Western star", n.western],
   ];
+  const fests = festivalsOf(id);
+  if (fests.length) facts.push(["Festivals", fests.map((f) => `<a class="gold" href="festivals.html">${f.name}</a>${f.date ? ` <span class="muted">· ${shortDate(f.date)}</span>` : ""}`).join("<br>")]);
   $("#sp-facts").innerHTML = facts.map(([k, v]) => `<div><div class="k">${k}</div><div class="v">${v}</div></div>`).join("");
 
   $("#sp-shloka").textContent = n.shloka.text;
@@ -115,6 +126,7 @@ function openStar(id) {
   if (typeof panel.showModal === "function") panel.showModal(); else panel.setAttribute("open", "");
 }
 
+$("#sp-card").addEventListener("click", () => { if (panelStar) StarCard.open({ id: panelStar.id, ...(panelStar.id === lastFound.id ? lastFound : {}) }); });
 $("#sp-close").addEventListener("click", () => { speechSynthesis?.cancel(); panel.close(); });
 panel.addEventListener("click", (e) => { if (e.target === panel) panel.close(); }); // click outside closes
 panel.addEventListener("close", () => { if ("speechSynthesis" in window) speechSynthesis.cancel(); });
@@ -198,6 +210,7 @@ $("#strip-next").addEventListener("click", () => strip.scrollBy({ left: strip.cl
 const slot = $("#f-slot");
 slot.addEventListener("change", () => { $("#f-time-wrap").hidden = slot.value !== "exact"; });
 
+let lastFound = { id: 0 };
 function showResult(isExample) {
   const date = $("#f-date").value;
   if (!date) return;
@@ -213,8 +226,13 @@ function showResult(isExample) {
     <span class="cap muted" style="font-size:9.5px">${isExample ? "Example · " : ""}You were born under</span>
     <span class="star">${n.en} <span class="deva" style="font-style:normal;font-size:20px">${n.sa}</span></span>
     <span class="note">${note}</span>
-    <button class="btn" type="button" id="find-open" style="align-self:flex-start;margin-top:8px">Open ${n.en} →</button>`;
+    <div class="row" style="margin-top:8px">
+      <button class="btn" type="button" id="find-open">Open ${n.en} →</button>
+      <button class="btn solid" type="button" id="find-card">My star card ✦</button>
+    </div>`;
+  lastFound = { id: n.id, date, pada: r.exact ? r.primary.pada : null };
   $("#find-open").addEventListener("click", () => openStar(n.id));
+  $("#find-card").addEventListener("click", () => StarCard.open(lastFound));
   highlightChip(n.id);
   markShishu(n.id);
   if (!isExample) {
@@ -461,3 +479,9 @@ $("#vp-cards").insertAdjacentHTML("beforeend", VISHNU_PURANA.map((v) =>
 updateTM();
 showResult(true);
 syncBar();
+
+/* index.html?star=8 opens that star straight away (used by the Festival Calendar) */
+(function openFromLink() {
+  const id = +new URLSearchParams(location.search).get("star");
+  if (id >= 1 && id <= 27) { highlightChip(id); setTimeout(() => openStar(id), 300); }
+})();
