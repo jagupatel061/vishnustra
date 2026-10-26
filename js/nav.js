@@ -1,16 +1,18 @@
-/* Shared top bar for every page. Put <header class="nav" id="nav"></header> in the page
+/* Shared top bar for every page. Links marked 1 show only in the ☰ menu (the top bar has no room).
+   Put <header class="nav" id="nav"></header> in the page
    and set data-page on <body> (home, atlas, portal, room, rishi, mudra, observatory, snap, festivals). */
 (function () {
   const page = document.body.dataset.page || "home";
   const links = [
     ["home", "index.html", "Home"],
-    ["atlas", "index.html#atlas", "Atlas"],
-    ["time", "index.html#time", "Time Machine"],
+    ["atlas", "index.html#atlas", "Atlas", 1],
+    ["time", "index.html#time", "Time Machine", 1],
     ["rishi", "rishi.html", "Rishi AI"],
     ["mudra", "mudra.html", "Mudra"],
     ["observatory", "observatory.html", "Observatory"],
     ["portal", "portal.html", "Sky Portal"],
     ["snap", "snap.html", "Snap"],
+    ["sky", "sky.html", "Sky Guide"],
     ["festivals", "festivals.html", "Festivals"],
   ];
   const el = document.getElementById("nav");
@@ -22,7 +24,7 @@
       <span><span class="brand-name">VISHNUSTRA</span><span class="brand-sub">Ancient wisdom · modern exploration</span></span>
     </a>
     <nav class="nav-links" aria-label="Main">
-      ${links.map(([k, href, label]) => `<a href="${href}"${k === page ? ' class="on" aria-current="page"' : ""}>${label}</a>`).join("")}
+      ${links.filter((l) => !l[3]).map(([k, href, label]) => `<a href="${href}"${k === page ? ' class="on" aria-current="page"' : ""}>${label}</a>`).join("")}
     </nav>
     <div class="nav-tools">
       <a class="nav-data" href="admin.html">Backend</a>

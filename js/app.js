@@ -120,6 +120,7 @@ function openStar(id) {
   $("#sp-shloka").textContent = n.shloka.text;
   $("#sp-meaning").textContent = n.shloka.meaning + (n.note ? ` ${n.note}` : "");
   $("#sp-src").textContent = `Vishnu Sahasranama · verse ${n.shloka.verse} · pada 1 of ${n.en}`;
+  $("#sp-sky").href = `sky.html?star=${id}`;
   $("#sp-name-in").value = "";
   $("#sp-name-out").textContent = "";
 
