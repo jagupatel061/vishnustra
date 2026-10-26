@@ -104,6 +104,7 @@ Database: server/data/db.json (open it in VS Code and watch it fill up).
   mudra.html          Mudra Cosmos (hand-gesture sky map; needs internet for hand tracking)
   observatory.html    The Lost Observatory game
   snap.html           Snap the Real Sky
+  sky.html            Sky Guide: live sky dome for any city/night + when/where/how to see all 27
   festivals.html      Festival Calendar: next date of each star festival + months named by stars
   admin.html          Backend data (live)
   data/nakshatras.js  All 27 stars: names in 5 languages, facts, shlokas, sky positions  ← research team checks
@@ -111,6 +112,8 @@ Database: server/data/db.json (open it in VS Code and watch it fill up).
   js/qr.js            Our own QR code generator (works offline)
   js/festcalc.js      Festival dates: new/full moons, lunar months (adhika too), star days
   data/festivals.js   The 15 festivals and their rules  ← research team checks
+  js/skycalc.js       Sky Guide maths: sidereal time → altitude/azimuth, rise/set, sunset, seasons
+  data/skyguide.js    How to find each star (star-hops), brightness, cities  ← research team checks
   js/starcard.js      Star Card: draws a 1080×1350 picture of your star to download/share
   js/api.js, js/room.js   Frontend ↔ backend
   server/server.js    The backend (HTTP + HTTPS, API, live updates)
@@ -134,6 +137,10 @@ Database: server/data/db.json (open it in VS Code and watch it fill up).
     Star festivals (Onam, Karthigai Deepam …) = Moon's star at sunrise in the solar month;
     if the star comes twice in that month, the second one. Checked: 2026 Onam 26 Aug,
     Raksha Bandhan 28 Aug, Aadi Pooram 14 Aug, Panguni Uttiram 1 Apr, Karthigai Deepam 24 Nov.
+  - Sky Guide: local sidereal time = 280.46° + 360.9856°×(days since 2000) + longitude.
+    Hour angle = sidereal time − RA. Then altitude = asin(sinφ sinδ + cosφ cosδ cosH).
+    "Evening sky" months = when the star crosses the south at 9 p.m.; "hidden" = when the Sun
+    stands next to it. Check any answer against Stellarium (free app).
   - "This is cultural astronomy, not prediction."
 
 8) RUN WITHOUT INSTALLING ANYTHING

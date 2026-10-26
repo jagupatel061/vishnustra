@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Sky Guide · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .controls { display: flex; flex-wrap: wrap; gap: 14px; align-items: flex-end; padding: 16px 18px; }
+  .controls .field { min-width: 0; }
+  .controls .field.place { flex: 1 1 240px; }
+  .controls .field.date { flex: 0 1 180px; }
+  .controls .field.skyq { flex: 0 1 230px; }
+  .controls .btn { height: 44px; }
+  .night-line { display: flex; flex-wrap: wrap; gap: 6px 18px; font-size: 12.5px; color: var(--ink-2); padding: 12px 18px; border-top: 1px solid var(--line); }
+  .night-line b { color: var(--ink); font-weight: 400; }
+  .sky-grid { display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); gap: 18px; margin-top: 18px; align-items: start; }
+  .dome-card { padding: 18px; }
+  #dome { width: 100%; aspect-ratio: 1; display: block; cursor: crosshair; touch-action: manipulation; }
+  .scrub { display: flex; align-items: center; gap: 12px; margin-top: 14px; }
+  .scrub input[type=range] { flex: 1; accent-color: var(--gold); }
+  .scrub .t { font-family: var(--display); font-size: 22px; font-weight: 300; min-width: 92px; font-variant-numeric: tabular-nums; }
+  .play { width: 40px; height: 40px; border-radius: 50%; border: 1px solid var(--gold-dim); background: none; color: var(--gold); cursor: pointer; flex: none; }
+  .legend { display: flex; flex-wrap: wrap; gap: 6px 16px; font-size: 11px; color: var(--ink-3); margin-top: 10px; }
+  .legend i { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 6px; vertical-align: 0; }
+  .detail { padding: 22px; display: flex; flex-direction: column; gap: 16px; }
+  .d-head { display: flex; gap: 16px; align-items: center; }
+  .d-head .ring { width: 84px; height: 84px; flex: none; border-radius: 50%; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; }
+  .d-name { font-family: var(--accent-serif); font-style: italic; font-weight: 500; font-size: 36px; color: var(--gold); line-height: 1.05; }
+  .d-name .deva { font-style: normal; font-size: 24px; color: var(--ink); margin-left: 8px; }
+  .status { align-self: flex-start; }
+  .status.up { border-color: var(--gold); color: var(--gold); }
+  .d-facts { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px 16px; }
+  .d-facts .k { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .d-facts .v { font-size: 14px; margin-top: 2px; }
+  .d-facts .v small { display: block; color: var(--ink-3); font-size: 11.5px; }
+  .howto { border-left: 2px solid var(--gold-dim); padding: 2px 0 2px 14px; }
+  .howto p { margin: 4px 0 0; color: var(--ink-2); font-size: 14px; }
+  .moon-note { font-size: 12.5px; color: var(--gold); }
+  .list-head { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between; margin: 48px 0 14px; }
+  .list-head h2 { margin: 0; font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; text-transform: uppercase; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; }
+  .filters button { cursor: pointer; background: none; }
+  .filters button.on { border-color: var(--gold); color: var(--gold); }
+  .s-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .s-card { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 12px; align-items: center; text-align: left; padding: 12px 14px; border: 1px solid var(--line-2); border-radius: 12px; background: rgba(14,14,16,.88); cursor: pointer; transition: border-color .2s; }
+  .s-card:hover, .s-card.on { border-color: var(--gold-dim); }
+  .s-card.on { box-shadow: 0 0 22px rgba(244,197,66,.1); }
+  .s-card .nm { font-family: var(--accent-serif); font-style: italic; font-size: 20px; line-height: 1.1; }
+  .s-card .st { font-size: 11.5px; color: var(--ink-3); margin-top: 2px; }
+  .s-card .st b { font-weight: 400; color: var(--gold); }
+  .dot-up { display: inline-block; width: 6px; height: 6px; border-radius: 50%; background: var(--gold); margin-right: 6px; vertical-align: 1px; }
+  .tiles3 { display: grid; grid-template-columns: 1.4fr 1fr 1fr; gap: 12px; }
+  .tile { border: 1px solid var(--line-2); border-radius: 12px; padding: 18px 20px; background: rgba(14,14,16,.88); }
+  .tile.big { border-color: var(--gold-dim); background: radial-gradient(ellipse at 0% 0%, rgba(244,197,66,.12), transparent 65%), rgba(14,14,16,.9); }
+  .tile .k { font-size: 9.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); }
+  .tile .v { font-family: var(--display); font-weight: 300; font-size: 44px; line-height: 1.1; margin-top: 6px; font-variant-numeric: tabular-nums; }
+  .tile.big .v { color: var(--gold); font-size: 60px; }
+  .tile .sub { font-size: 12px; color: var(--ink-3); margin-top: 4px; }
+  .above-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr); gap: 12px; margin-top: 12px; }
+  .b-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 13.5px; }
+  .b-row:last-child { border-bottom: 0; }
+  .b-row .w { color: var(--ink-3); font-size: 12px; text-align: right; }
+  .con-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+  .con-chips span { font-size: 12px; padding: 4px 10px; border: 1px solid var(--line-2); border-radius: 999px; color: var(--ink-2); }
+  .con-chips span .deva { color: var(--gold); margin-left: 6px; }
+  @media (max-width: 1000px) { .tiles3 { grid-template-columns: 1fr 1fr; } .tile.big { grid-column: span 2; } .above-grid { grid-template-columns: 1fr; } }
+  @media (max-width: 1000px) { .sky-grid { grid-template-columns: 1fr; } .s-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+  @media (max-width: 620px) { .s-grid { grid-template-columns: 1fr; } .d-facts { grid-template-columns: repeat(2, minmax(0, 1fr)); } .dome-card, .detail { padding: 14px; } .d-name { font-size: 30px; } }
+</style>
+</head>
+<body data-page="sky">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Sky Guide · all 27 nakshatras</span>
+        <h1>Where are the stars <span class="serif-i">tonight?</span></h1>
+        <p>Pick a place and a night. The dome shows your real sky, and every nakshatra tells you when it rises, where to look and how to find it with your own eyes.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-bottom:64px">
+    <div class="panel-box" style="padding:0">
+      <div class="controls">
+        <div class="field place"><label for="place">Place</label><select id="place"></select></div>
+        <button class="btn" type="button" id="locate">⌖ My location</button>
+        <div class="field date"><label for="date">Night of</label><input type="date" id="date"></div>
+        <div class="field skyq"><label for="skytype">Your sky</label><select id="skytype"></select></div>
+        <button class="btn solid" type="button" id="now">Now</button>
+      </div>
+      <div class="night-line" id="night-line" aria-live="polite"></div>
+    </div>
+
+    <div class="sky-grid">
+      <div class="panel-box dome-card">
+        <canvas id="dome" role="img" aria-label="Sky dome: your sky with the nakshatras"></canvas>
+        <div class="scrub">
+          <button class="play" type="button" id="play" aria-label="Play the night">▶</button>
+          <input type="range" id="time" min="0" max="1440" step="5" aria-label="Time of night">
+          <span class="t" id="time-label">—</span>
+        </div>
+        <div class="legend">
+          <span><i style="background:var(--gold)"></i>Nakshatra (tap one)</span>
+          <span><i style="background:#ece8df"></i>Moon</span>
+          <span><i style="border:1px dashed var(--gold-dim);border-radius:0;height:0;width:14px"></i>Path of Sun &amp; Moon</span>
+          <label style="cursor:pointer"><input type="checkbox" id="western" checked style="accent-color:var(--gold);vertical-align:-2px;margin:0 6px 0 0">Western constellation lines</label>
+          <span>Centre = straight overhead · edge = horizon. Hold it above your head with N to the north.</span>
+        </div>
+      </div>
+      <div class="panel-box detail" id="detail" aria-live="polite"></div>
+    </div>
+
+    <section class="above" aria-live="polite">
+      <div class="list-head" style="margin-top:44px"><h2>Above <span class="serif-i gold" style="letter-spacing:0;font-size:22px" id="above-place">you</span> right now</h2><span class="muted" style="font-size:12px" id="above-time"></span></div>
+      <div class="tiles3">
+        <div class="tile big"><div class="k">Stars you can see with your eyes</div><div class="v" id="c-seen">—</div><div class="sub" id="c-seen-sub"></div></div>
+        <div class="tile"><div class="k">Constellations above the horizon</div><div class="v" id="c-cons">—</div><div class="sub">of the 88 in the whole sky</div></div>
+        <div class="tile"><div class="k">Nakshatras above the horizon</div><div class="v" id="c-nak">—</div><div class="sub">of the 27 on the Moon's path</div></div>
+      </div>
+      <div class="above-grid">
+        <div class="panel-box"><div class="cap gold" style="margin-bottom:10px">Brightest stars up now</div><div id="bright-list"></div></div>
+        <div class="panel-box"><div class="cap gold" style="margin-bottom:10px">Constellations above you · English &amp; Hindi</div><div class="con-chips" id="con-list"></div></div>
+      </div>
+    </section>
+
+    <div class="list-head">
+      <h2>All 27 <span class="serif-i gold" style="letter-spacing:0;font-size:22px">this night</span></h2>
+      <div class="filters" role="group" aria-label="Filter stars">
+        <button class="chip on" type="button" data-f="all">All</button>
+        <button class="chip" type="button" data-f="now">Up at this time</button>
+        <button class="chip" type="button" data-f="night">Visible tonight</button>
+        <button class="chip" type="button" data-f="no">Not tonight</button>
+      </div>
+    </div>
+    <div class="s-grid" id="list"></div>
+
+    <div class="note-box" style="margin-top:28px"><b>How it works:</b> every star (5,000 real stars from the Hipparcos catalogue, down to the faintest the eye can see) has a fixed place on the sky sphere. From your latitude, longitude and the time, our code works out the sidereal time, and from it the star's height and direction. Times are in IST. "Visible tonight" means at least 10° above the horizon after dark. The star count uses the faintest star your sky allows (city glow, twilight, moonlight) and makes stars near the horizon look fainter, because their light passes through more air. Star data: d3-celestial (Hipparcos), IAU constellation lines.</div>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="data/skyguide.js"></script>
+<script src="data/skystars.js"></script>
+<script src="js/shapes.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/skycalc.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/skyguide.js"></script>
+</body>
+</html>
