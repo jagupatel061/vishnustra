@@ -64,7 +64,7 @@ const SKYGUIDE = {
 };
 
 const CITIES = [
-  ["Surat (Auro University)", 21.17, 72.83], ["Ahmedabad", 23.03, 72.58], ["Vadodara", 22.31, 73.18],
+  ["Surat", 21.17, 72.83], ["Ahmedabad", 23.03, 72.58], ["Vadodara", 22.31, 73.18],
   ["Mumbai", 19.08, 72.88], ["Pune", 18.52, 73.86], ["Delhi", 28.61, 77.21], ["Jaipur", 26.91, 75.79],
   ["Varanasi", 25.32, 83.01], ["Kolkata", 22.57, 88.36], ["Guwahati", 26.14, 91.74], ["Hyderabad", 17.39, 78.49],
   ["Bengaluru", 12.97, 77.59], ["Chennai", 13.08, 80.27], ["Kochi", 9.93, 76.27],
