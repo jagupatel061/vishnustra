@@ -340,3 +340,10 @@ canvas.stage { display: block; width: 100%; border-radius: 10px; border: 1px sol
 
 /* star card row in the star panel */
 .sp-card-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--gold-dim); border-radius: 10px; background: rgba(244,197,66,.05); }
+
+/* top bar with many pages */
+.nav-links { gap: 22px; font-size: 12.5px; }
+.nav-room { white-space: nowrap; }
+@media (max-width: 1600px) { .brand-sub { display: none; } }
+@media (max-width: 1280px) { .nav-links { display: none; } .nav-menu { display: inline-flex; } .nav-tools { margin-left: auto; } .nav-data { display: none; } }
+@media (min-width: 1281px) { .nav-drawer { display: none !important; } }
