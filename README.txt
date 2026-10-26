@@ -104,10 +104,14 @@ Database: server/data/db.json (open it in VS Code and watch it fill up).
   mudra.html          Mudra Cosmos (hand-gesture sky map; needs internet for hand tracking)
   observatory.html    The Lost Observatory game
   snap.html           Snap the Real Sky
+  festivals.html      Festival Calendar: next date of each star festival + months named by stars
   admin.html          Backend data (live)
   data/nakshatras.js  All 27 stars: names in 5 languages, facts, shlokas, sky positions  ← research team checks
   js/astro.js         Moon position (Jean Meeus) + Lahiri ayanamsa → nakshatra + pada
   js/qr.js            Our own QR code generator (works offline)
+  js/festcalc.js      Festival dates: new/full moons, lunar months (adhika too), star days
+  data/festivals.js   The 15 festivals and their rules  ← research team checks
+  js/starcard.js      Star Card: draws a 1080×1350 picture of your star to download/share
   js/api.js, js/room.js   Frontend ↔ backend
   server/server.js    The backend (HTTP + HTTPS, API, live updates)
   server/db.js        The database code
@@ -124,6 +128,12 @@ Database: server/data/db.json (open it in VS Code and watch it fill up).
   - Shlokas: Vishnu Sahasranama (Mahabharata, Anushasana Parva). By devotional tradition
     its 108 verses match the 108 padas: star N, pada P → verse 4(N−1)+P.
   - Shishumara, Dhruva and the 27 daughters of Daksha: Vishnu Purana (H.H. Wilson's translation).
+  - Festival Calendar: a lunar month starts at a new moon and is named from the Sun's sidereal
+    sign then (Sun in Meena → Chaitra …); two new moons in one sign → adhika (leap) month.
+    Its full moon sits near the star it is named after (Kartika ↔ Krittika).
+    Star festivals (Onam, Karthigai Deepam …) = Moon's star at sunrise in the solar month;
+    if the star comes twice in that month, the second one. Checked: 2026 Onam 26 Aug,
+    Raksha Bandhan 28 Aug, Aadi Pooram 14 Aug, Panguni Uttiram 1 Apr, Karthigai Deepam 24 Nov.
   - "This is cultural astronomy, not prediction."
 
 8) RUN WITHOUT INSTALLING ANYTHING

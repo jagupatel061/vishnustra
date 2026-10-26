@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Festival Calendar · Vishnustra</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@1,400;1,500&family=Jost:wght@300;400;500&family=Tiro+Devanagari+Sanskrit&display=swap">
+<link rel="stylesheet" href="css/style.css">
+<style>
+  .fest-next { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 28px; align-items: center; padding: 28px 30px; border: 1px solid var(--gold-dim); border-radius: 14px;
+    background: radial-gradient(ellipse at 0% 0%, rgba(244,197,66,.13), transparent 60%), rgba(14,14,16,.9); }
+  .fest-next .ring { width: 104px; height: 104px; border-radius: 50%; border: 1px solid var(--gold-dim); display: flex; align-items: center; justify-content: center; box-shadow: 0 0 40px rgba(244,197,66,.12); }
+  .fest-next h2 { font-family: var(--accent-serif); font-style: italic; font-weight: 500; font-size: clamp(30px, 4vw, 44px); color: var(--gold); margin: 4px 0 0; line-height: 1.05; }
+  .fest-next p { color: var(--ink-2); margin: 10px 0 0; max-width: 62ch; }
+  .count { text-align: center; }
+  .count .n { font-family: var(--display); font-weight: 300; font-size: 64px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .filters { display: flex; flex-wrap: wrap; gap: 8px; margin: 34px 0 16px; }
+  .filters button { cursor: pointer; background: none; }
+  .filters button.on { border-color: var(--gold); color: var(--gold); }
+  .fest-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px; }
+  .fest { display: grid; grid-template-columns: 64px minmax(0, 1fr); gap: 16px; padding: 18px; border: 1px solid var(--line-2); border-radius: 12px; background: rgba(14,14,16,.88); transition: border-color .2s; }
+  .fest:hover { border-color: var(--gold-dim); }
+  .fest .date { text-align: center; border-right: 1px solid var(--line); padding-right: 14px; }
+  .fest .date .d { font-family: var(--display); font-weight: 300; font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+  .fest .date .m { font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--ink-3); margin-top: 4px; }
+  .fest .date .y { font-size: 10px; color: var(--ink-3); }
+  .fest h3 { margin: 0; font-family: var(--accent-serif); font-style: italic; font-weight: 500; font-size: 22px; line-height: 1.15; }
+  .fest .meta { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+  .fest p { font-size: 13px; color: var(--ink-2); margin: 10px 0 0; }
+  .star-link { display: inline-flex; align-items: center; gap: 8px; margin-top: 12px; font-size: 12px; color: var(--gold); border: 1px solid var(--gold-dim); border-radius: 999px; padding: 3px 12px 3px 4px; }
+  .star-link:hover { background: rgba(244,197,66,.08); }
+  .soon { color: var(--gold); }
+  .months { display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; }
+  .mon { padding: 14px; border: 1px solid var(--line-2); border-radius: 10px; background: rgba(14,14,16,.88); }
+  .mon .deva { font-size: 20px; color: var(--gold); }
+  .mon .nm { font-family: var(--display); letter-spacing: .08em; font-size: 14px; }
+  .mon .from { font-size: 11.5px; color: var(--ink-2); margin-top: 8px; }
+  .mon .when { font-size: 11px; color: var(--ink-3); margin-top: 4px; }
+  .mon.adhika { border-style: dashed; }
+  .sec-title { font-family: var(--display); font-weight: 400; font-size: 15px; letter-spacing: .2em; text-transform: uppercase; margin: 56px 0 6px; }
+  @media (max-width: 1100px) { .fest-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } .months { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+  @media (max-width: 700px) {
+    .fest-next { grid-template-columns: 1fr; text-align: left; gap: 16px; padding: 22px; }
+    .fest-next .ring { width: 78px; height: 78px; }
+    .count { text-align: left; } .count .n { font-size: 48px; }
+    .fest-grid { grid-template-columns: 1fr; }
+    .months { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+</style>
+</head>
+<body data-page="festivals">
+<canvas id="sky" aria-hidden="true"></canvas>
+<div class="page">
+<header class="nav" id="nav"></header>
+
+<main>
+  <section class="subhero">
+    <div class="wrap">
+      <div>
+        <span class="eyebrow">Festival Calendar · counted by the Moon</span>
+        <h1>Festivals that <span class="serif-i">follow the stars</span></h1>
+        <p>Onam, Karthigai Deepam, Raksha Bandhan, Holi: each is fixed by where the Moon stands among the 27 nakshatras. Our code works out the next date of each one from the Moon's real position.</p>
+      </div>
+      <span class="chip" id="today-chip"><span class="dot"></span><span id="today-text">Today</span></span>
+    </div>
+  </section>
+
+  <div class="wrap" style="padding-bottom:64px">
+    <div class="fest-next" id="next"></div>
+
+    <div class="filters" role="group" aria-label="Filter festivals">
+      <button class="chip on" type="button" data-f="all">All festivals</button>
+      <button class="chip" type="button" data-f="star">Star days</button>
+      <button class="chip" type="button" data-f="purnima">Full moons</button>
+    </div>
+    <div class="fest-grid" id="grid"></div>
+
+    <h2 class="sec-title">Months <span class="serif-i gold" style="letter-spacing:0;font-size:22px">named by stars</span></h2>
+    <p class="muted" style="max-width:70ch;margin:0 0 18px">Every Indian lunar month takes its name from the nakshatra the full Moon sits in: Chaitra from Chitra, Kartika from Krittika, Shravana from Shravana. Here are the next twelve full moons, and where the Moon really is that night.</p>
+    <div class="months" id="months"></div>
+
+    <div class="note-box" style="margin-top:28px"><b>How the dates are found:</b> Moon position by Jean Meeus's formulas, Lahiri ayanamsa, Indian Standard Time. Star festivals take the Moon's star at sunrise in the right solar month; full-moon festivals take the full-moon day of the right lunar month. A local panchang may differ by one day. A dashed month is <i>adhika</i>: an extra leap month, added when two new moons fall in the same solar month.</div>
+  </div>
+</main>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/nav.js"></script>
+<script src="data/nakshatras.js"></script>
+<script src="data/festivals.js"></script>
+<script src="js/shapes.js"></script>
+<script src="js/astro.js"></script>
+<script src="js/festcalc.js"></script>
+<script src="js/bgsky.js"></script>
+<script src="js/festivals.js"></script>
+</body>
+</html>
