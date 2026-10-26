@@ -337,3 +337,6 @@ canvas.stage { display: block; width: 100%; border-radius: 10px; border: 1px sol
 .nav-links { gap: 26px; }
 .nav-links a { white-space: nowrap; }
 @media (max-width: 1400px) { .brand-sub { display: none; } }
+
+/* star card row in the star panel */
+.sp-card-row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: space-between; padding: 14px 16px; border: 1px solid var(--gold-dim); border-radius: 10px; background: rgba(244,197,66,.05); }
