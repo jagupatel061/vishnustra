@@ -347,3 +347,7 @@ canvas.stage { display: block; width: 100%; border-radius: 10px; border: 1px sol
 @media (max-width: 1600px) { .brand-sub { display: none; } }
 @media (max-width: 1280px) { .nav-links { display: none; } .nav-menu { display: inline-flex; } .nav-tools { margin-left: auto; } .nav-data { display: none; } }
 @media (min-width: 1281px) { .nav-drawer { display: none !important; } }
+
+/* astronomers row: keep the letter boxes the same size on phones */
+.astro .mark { flex: none; }
+@media (max-width: 620px) { .astros .wrap > p.cap { text-align: left !important; flex: 1 1 100%; } }
